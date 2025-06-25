@@ -1,0 +1,25 @@
+﻿# Visual Studio временные файлы
+.vs/
+
+# JetBrains IDE папка настроек
+.idea/
+
+# Сборки
+bin/
+obj/
+
+# ользовательские настройки
+*.user
+*.suo
+
+# оги
+*.log
+
+# акеты NuGet
+packages/
+
+# DLL и прочие временные файлы
+*.dll
+
+# апка temp
+temp/
