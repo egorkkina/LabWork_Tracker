@@ -5,7 +5,8 @@ class Program
 {
     static void Main(string[] args)
     {
-        StudentService service = new StudentService();
+        StudentService serviceStudent = new StudentService();
+        LaboratoryWorkService serviceLaboratoryWork = new LaboratoryWorkService();
 
         while (true)
         {
@@ -20,8 +21,13 @@ class Program
             switch (Console.ReadLine())
             {
                 case "1":
-                    StudentMenu.ShowStudentMenu(service);
+                    StudentMenu.ShowStudentMenu(serviceStudent);
                     break;
+                case "2":
+                    LaboratoryWorkMenu.ShowMenuLaboratoryWork(serviceLaboratoryWork);
+                    break;
+                case "0":
+                    return;
             }
         }
     }
