@@ -2,8 +2,8 @@ namespace LabWork_Tracker.Interfaces;
 
 public interface ILaboratoryWorkService
 {
-    void AddLaboratoryWork(LaboratoryWork laboratoryWork);
-    void EditLaboratoryWork(int id, Action<LaboratoryWork> editAction);
-    void RemoveLaboratoryWork(int id);
-    List<LaboratoryWork> ShowAllLaboratoryWorks();
+    bool AddLaboratoryWork(LaboratoryWork laboratoryWork);
+    bool EditLaboratoryWork(int id, Action<LaboratoryWork> editAction);
+    bool RemoveLaboratoryWork(int id);
+    List<LaboratoryWork> GetAllLaboratoryWorks();
 }

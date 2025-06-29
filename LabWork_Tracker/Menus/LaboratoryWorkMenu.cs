@@ -1,3 +1,5 @@
+using LabWork_Tracker.Services;
+
 namespace LabWork_Tracker;
 
 public class LaboratoryWorkMenu
@@ -38,18 +40,14 @@ public class LaboratoryWorkMenu
         }
     }
 
-    public static LaboratoryWork CreateLaboratoryWork()
+    private static LaboratoryWork CreateLaboratoryWork()
     {
         Console.Clear();
-        Console.WriteLine("| Добавление лабораторной работы |");
-        Console.Write("Введите предмет, по которому будет выдана ЛР: ");
-        var newSubject = Console.ReadLine();
-        Console.Write("Введите название ЛР: ");
-        var newName = Console.ReadLine();
-        Console.WriteLine("Заполните описание данной ЛР: ");
-        var newDescription = Console.ReadLine();
-        Console.WriteLine("Введите дедлайн по данной работе (гггг-мм-дд): ");
-        DateTime newDeadline = DateTime.Parse(Console.ReadLine());
+        Console.WriteLine("--- Добавление лабораторной работы ---");
+        var newSubject = InputHelper.PromptNonEmpty("Введите предмет, по которому будет выдана ЛР: ");
+        var newName = InputHelper.PromptNonEmpty("Введите название ЛР: ");
+        var newDescription = InputHelper.PromptNonEmpty("Заполните описание данной ЛР: ");
+        DateTime newDeadline = InputHelper.PromptValidDate("Введите дедлайн по данной работе (гггг-мм-дд): ");
         
         Console.WriteLine($"Лабораторная работа [ {newName} ] была добавлена");
 
@@ -63,47 +61,50 @@ public class LaboratoryWorkMenu
         
     }
 
-    public static void ShowLaboratoryWork(LaboratoryWorkService service)
+    private static void ShowLaboratoryWork(LaboratoryWorkService service)
     {
+        if (service.GetAllLaboratoryWorks().Count == 0)
+        {
+            Console.WriteLine("Список лабораторных работ пуст.");
+            return;
+        }
         Console.WriteLine("--- Информация по лабораторным работам ---\n");
         Console.WriteLine("{0,-10} | {1,-50} | {2,-50} | {3, -60} | {4, 0}", "ID", "Предмет", "Название", "Описание", "Дедлайн");
         Console.WriteLine(new string('-', 200));
-        foreach (var lr in service.ShowAllLaboratoryWorks())
+        foreach (var lr in service.GetAllLaboratoryWorks())
         {
             Console.WriteLine("{0,-10} | {1,-50} | {2,-50} | {3, -60} | {4, 0}", lr.Id, lr.Subject, lr.Name, lr.Description, lr.Deadline);
         }
     }
 
-    public static void DeleteLaboratoryWork(LaboratoryWorkService service)
+    private static void DeleteLaboratoryWork(LaboratoryWorkService service)
     {
-        Console.Write("Введите ID лабораторной работы, которую хотите удалить: ");
-        if (Int32.TryParse(Console.ReadLine(), out var id))
+        var id = InputHelper.PromptValidLabId("Введите ID лабораторной работы, которую хотите удалить: ");
+        if (!service.RemoveLaboratoryWork(id))
         {
-            service.RemoveLaboratoryWork(id);
-            Console.WriteLine($"Лабораторная работа с ID: {id} была удалена");
-        }
-        else
-        {
-            Console.WriteLine("Неверный формат ID.");
-        }
-    }
-
-    public static void ModifyLaboratoryWork(LaboratoryWorkService service)
-    {
-        Console.Write("Введите ID лабораторной работы, которую хотите изменить: ");
-        if (!Int32.TryParse(Console.ReadLine(), out var id))
-        {
-            Console.WriteLine("Неверный формат ID");
+            Console.WriteLine("Лабораторная работа с таким ID не найдена");
             return;
         }
+        Console.WriteLine($"Лабораторная работа с ID: {id} была удалена");
         
-        var laboratoryWork = service.ShowAllLaboratoryWorks().FirstOrDefault(x => x.Id == id);
+    }
+
+    private static void ModifyLaboratoryWork(LaboratoryWorkService service)
+    {
+        var id = InputHelper.PromptValidLabId("Введите ID лабораторной работы, которую хотите изменить: ");
+        
+        var laboratoryWork = service.GetAllLaboratoryWorks().FirstOrDefault(x => x.Id == id);
         if (laboratoryWork == null)
         {
             Console.WriteLine($"Лабораторной работы с ID [ {id} ] не существует");
             return;
         }
         
+        EntryLaboratoryWork(laboratoryWork, service, id);
+    }
+
+    private static void EntryLaboratoryWork(LaboratoryWork laboratoryWork, LaboratoryWorkService service, int id)
+    {
         while (true)
         {
             Console.Clear();
@@ -111,7 +112,7 @@ public class LaboratoryWorkMenu
             Console.WriteLine($"1. Предмет: {laboratoryWork.Subject}\n" +
                               $"2. Название: {laboratoryWork.Name}\n" +
                               $"3. Описание: {laboratoryWork.Description}\n" +
-                              $"4. Дедлайн: {laboratoryWork.Deadline}"+
+                              $"4. Дедлайн: {laboratoryWork.Deadline}\n"+
                               $"0. Завершить редактирование");
             Console.Write("Выберите поле для изменения: ");
             
@@ -119,24 +120,29 @@ public class LaboratoryWorkMenu
             switch (input)
             {
                 case "1":
-                    Console.Write("Введите название предмета: ");
-                    var modifySubject = Console.ReadLine();
+                    var modifySubject = InputHelper.PromptNonEmpty("Введите название предмета: ");
                     service.EditLaboratoryWork(id, s => s.Subject = modifySubject);
                     break;
                 case "2":
-                    Console.Write("Введите название лабораторной работы: ");
-                    var modifyName = Console.ReadLine();
+                    var modifyName = InputHelper.PromptNonEmpty("Введите название лабораторной работы: ");
                     service.EditLaboratoryWork(id, s => s.Name = modifyName);
                     break;
                 case "3":
-                    Console.Write("Введите новое описание: ");
-                    var modifyDescription = Console.ReadLine();
+                    var modifyDescription = InputHelper.PromptNonEmpty("Введите новое описание: ");
                     service.EditLaboratoryWork(id, s => s.Description = modifyDescription);
                     break;
                 case "4":
                     Console.Write("Введите дедлайн сдачи лабораторной работы: ");
-                    var modifyDeadline = DateTime.Parse(Console.ReadLine());
-                    service.EditLaboratoryWork(id, s => s.Deadline = modifyDeadline);
+                    string str = Console.ReadLine();
+                    if (DateTime.TryParse(str, out DateTime modifyDeadline))
+                    {
+                        service.EditLaboratoryWork(id, s => s.Deadline = modifyDeadline);
+                        Console.WriteLine("Дедлайн обновлён.");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Неверный формат даты. Попробуйте ещё раз.");
+                    }
                     break;
                 case "0":
                     return;
@@ -146,4 +152,6 @@ public class LaboratoryWorkMenu
             }
         }
     }
+    
+    
 }

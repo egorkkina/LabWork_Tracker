@@ -1,5 +1,6 @@
 ﻿using System;
 using LabWork_Tracker;
+using LabWork_Tracker.Services;
 
 class Program
 {
@@ -7,6 +8,7 @@ class Program
     {
         StudentService serviceStudent = new StudentService();
         LaboratoryWorkService serviceLaboratoryWork = new LaboratoryWorkService();
+        WorkTrackingService serviceWorkTracking = new WorkTrackingService(serviceStudent, serviceLaboratoryWork);
 
         while (true)
         {
@@ -15,6 +17,7 @@ class Program
             Console.WriteLine("1. Управление студентами\n" +
                               "2. Управление лабораторными работами\n" +
                               "3. Учёт выполнения лабораторных работ\n" +
+                              "4. Отчёты и аналитика\n" +
                               "0. Выход");
             Console.Write("Выберите нужный вариант: ");
 
@@ -25,6 +28,9 @@ class Program
                     break;
                 case "2":
                     LaboratoryWorkMenu.ShowMenuLaboratoryWork(serviceLaboratoryWork);
+                    break;
+                case "3":
+                    WorkProgressMenu.ShowWorkProgressMenu(serviceWorkTracking);
                     break;
                 case "0":
                     return;
