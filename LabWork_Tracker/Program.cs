@@ -1,5 +1,6 @@
 ﻿using System;
 using LabWork_Tracker;
+using LabWork_Tracker.Menus;
 using LabWork_Tracker.Services;
 
 class Program
@@ -9,6 +10,7 @@ class Program
         StudentService serviceStudent = new StudentService();
         LaboratoryWorkService serviceLaboratoryWork = new LaboratoryWorkService();
         WorkTrackingService serviceWorkTracking = new WorkTrackingService(serviceStudent, serviceLaboratoryWork);
+        ReportService reportService = new ReportService(serviceStudent, serviceLaboratoryWork, serviceWorkTracking);
 
         while (true)
         {
@@ -31,6 +33,9 @@ class Program
                     break;
                 case "3":
                     WorkProgressMenu.ShowWorkProgressMenu(serviceWorkTracking);
+                    break;
+                case "4":
+                    ReportMenu.ShowReportMenu(reportService);
                     break;
                 case "0":
                     return;

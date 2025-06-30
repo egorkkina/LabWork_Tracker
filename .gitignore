@@ -3,6 +3,7 @@
 
 # JetBrains IDE папка настроек
 .idea/
+*.sln.iml
 
 # Сборки
 bin/
