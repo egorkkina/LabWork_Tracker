@@ -3,15 +3,15 @@ using LabWork_Tracker.Interfaces;
 namespace LabWork_Tracker.Services;
 
 public class ReportService(
-    StudentService studentService,
-    LaboratoryWorkService labService,
-    WorkTrackingService workTrackingService)
+    IStudentService studentService,
+    ILaboratoryWorkService labService,
+    IWorkTrackingService workTrackingService)
     : IReportService
 {
 
-    private readonly StudentService _studentService = studentService;
-    private readonly LaboratoryWorkService _labService = labService;
-    private readonly WorkTrackingService _workTrackingService = workTrackingService;
+    private readonly IStudentService _studentService = studentService;
+    private readonly ILaboratoryWorkService _labService = labService;
+    private readonly IWorkTrackingService _workTrackingService = workTrackingService;
 
     public List<StudentStatistic> GetStudentStatistics()
     {

@@ -1,10 +1,11 @@
+using LabWork_Tracker.Interfaces;
 using LabWork_Tracker.Services;
 
 namespace LabWork_Tracker;
 
 public static class WorkProgressMenu
 {
-    public static void ShowWorkProgressMenu(WorkTrackingService service)
+    public static void ShowWorkProgressMenu(IWorkTrackingService service)
     {
         while (true)
         {
@@ -37,7 +38,7 @@ public static class WorkProgressMenu
         }
     }
 
-    private static void AssignStudentLab(WorkTrackingService service)
+    private static void AssignStudentLab(IWorkTrackingService service)
     {
         Console.WriteLine("--- Привязка студента к лабораторной работе ---");
         var studentId = InputHelper.PromptValidStudentId("Введите ID студента: ");
@@ -51,7 +52,7 @@ public static class WorkProgressMenu
         Console.WriteLine($"Студент [ {studentId} ] успешно привязан к лабораторной работе [ {labId} ]");
     }
 
-    private static void UpdateStatusLab(WorkTrackingService service)
+    private static void UpdateStatusLab(IWorkTrackingService service)
     {
         Console.WriteLine("--- Отметка статуса выполнения ---");
         var studentId = InputHelper.PromptValidStudentId("Введите ID студента: ");
@@ -67,7 +68,7 @@ public static class WorkProgressMenu
                           $"обновлён на [ {workStatus} ]");
     }
 
-    private static void AddGrade(WorkTrackingService service)
+    private static void AddGrade(IWorkTrackingService service)
     {
         Console.WriteLine("--- Добавление оценки за работу ---");
         var studentId = InputHelper.PromptValidStudentId("Введите ID студента: ");
@@ -108,7 +109,7 @@ public static class WorkProgressMenu
         }
     }
 
-    private static void ShowProgress(WorkTrackingService service)
+    private static void ShowProgress(IWorkTrackingService service)
     {
         Console.WriteLine("--- Статус и оценки студентов за лабораторную работу ---");
         Console.WriteLine("{0,-50} | {1,-40} | {2,-30} | {3, -40}", "ID студента", "ID лабораторной работы", "Статус выполнения", "Оценка");

@@ -1,10 +1,11 @@
+using LabWork_Tracker.Interfaces;
 using LabWork_Tracker.Services;
 
 namespace LabWork_Tracker.Menus;
 
 public static class ReportMenu
 {
-    public static void ShowReportMenu(ReportService reportService)
+    public static void ShowReportMenu(IReportService reportService)
     {
         while (true)
         {
@@ -31,7 +32,7 @@ public static class ReportMenu
         }
     }
 
-    private static void PrintStudentStatistics(ReportService reportService)
+    private static void PrintStudentStatistics(IReportService reportService)
     {
         var studentStatistics = reportService.GetStudentStatistics();
         Console.WriteLine("Имя студента              | Сдано работ | Средний балл");
@@ -43,7 +44,7 @@ public static class ReportMenu
         }
     }
 
-    private static void PrintLabStatistics(ReportService reportService)
+    private static void PrintLabStatistics(IReportService reportService)
     {
         var labStatistics = reportService.GetLabStatistics();
         Console.WriteLine("Предмет              | Сдано работ  | Процент выполнения | Средний балл");

@@ -2,13 +2,13 @@ using LabWork_Tracker.Interfaces;
 
 namespace LabWork_Tracker.Services;
 
-public class WorkTrackingService(StudentService studentService, LaboratoryWorkService labService)
+public class WorkTrackingService(IStudentService studentService, ILaboratoryWorkService labService)
     : IWorkTrackingService
 {
     private readonly Dictionary<(Guid, int), WorkProgress> _workProgress = new();
     
-    private readonly StudentService _studentService = studentService;
-    private readonly LaboratoryWorkService _labService = labService;
+    private readonly IStudentService _studentService = studentService;
+    private readonly ILaboratoryWorkService _labService = labService;
 
     public bool Assign(Guid studentId, int labId)
     {

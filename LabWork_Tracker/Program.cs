@@ -1,5 +1,6 @@
 ﻿using System;
 using LabWork_Tracker;
+using LabWork_Tracker.Interfaces;
 using LabWork_Tracker.Menus;
 using LabWork_Tracker.Services;
 
@@ -7,10 +8,10 @@ class Program
 {
     static void Main(string[] args)
     {
-        StudentService serviceStudent = new StudentService();
-        LaboratoryWorkService serviceLaboratoryWork = new LaboratoryWorkService();
-        WorkTrackingService serviceWorkTracking = new WorkTrackingService(serviceStudent, serviceLaboratoryWork);
-        ReportService reportService = new ReportService(serviceStudent, serviceLaboratoryWork, serviceWorkTracking);
+        IStudentService serviceStudent = new StudentService();
+        ILaboratoryWorkService serviceLaboratoryWork = new LaboratoryWorkService();
+        IWorkTrackingService serviceWorkTracking = new WorkTrackingService(serviceStudent, serviceLaboratoryWork);
+        IReportService reportService = new ReportService(serviceStudent, serviceLaboratoryWork, serviceWorkTracking);
 
         while (true)
         {

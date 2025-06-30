@@ -1,10 +1,11 @@
+using LabWork_Tracker.Interfaces;
 using LabWork_Tracker.Services;
 
 namespace LabWork_Tracker;
 
 public class LaboratoryWorkMenu
 {
-    public static void ShowMenuLaboratoryWork(LaboratoryWorkService service)
+    public static void ShowMenuLaboratoryWork(ILaboratoryWorkService service)
     {
         while (true)
         {
@@ -61,7 +62,7 @@ public class LaboratoryWorkMenu
         
     }
 
-    private static void ShowLaboratoryWork(LaboratoryWorkService service)
+    private static void ShowLaboratoryWork(ILaboratoryWorkService service)
     {
         if (service.GetAllLaboratoryWorks().Count == 0)
         {
@@ -77,7 +78,7 @@ public class LaboratoryWorkMenu
         }
     }
 
-    private static void DeleteLaboratoryWork(LaboratoryWorkService service)
+    private static void DeleteLaboratoryWork(ILaboratoryWorkService service)
     {
         var id = InputHelper.PromptValidLabId("Введите ID лабораторной работы, которую хотите удалить: ");
         if (!service.RemoveLaboratoryWork(id))
@@ -89,7 +90,7 @@ public class LaboratoryWorkMenu
         
     }
 
-    private static void ModifyLaboratoryWork(LaboratoryWorkService service)
+    private static void ModifyLaboratoryWork(ILaboratoryWorkService service)
     {
         var id = InputHelper.PromptValidLabId("Введите ID лабораторной работы, которую хотите изменить: ");
         
@@ -103,7 +104,7 @@ public class LaboratoryWorkMenu
         EntryLaboratoryWork(laboratoryWork, service, id);
     }
 
-    private static void EntryLaboratoryWork(LaboratoryWork laboratoryWork, LaboratoryWorkService service, int id)
+    private static void EntryLaboratoryWork(LaboratoryWork laboratoryWork, ILaboratoryWorkService service, int id)
     {
         while (true)
         {

@@ -1,10 +1,11 @@
+using LabWork_Tracker.Interfaces;
 using LabWork_Tracker.Services;
 
 namespace LabWork_Tracker;
 
 public static class StudentMenu
 {
-    public static void ShowStudentMenu(StudentService service)
+    public static void ShowStudentMenu(IStudentService service)
     {
         while (true)
         {
@@ -40,7 +41,7 @@ public static class StudentMenu
         }
     }
 
-    private static void AddNewStudent(StudentService service)
+    private static void AddNewStudent(IStudentService service)
     {
         Student newStudent = CreateStudent();
         if (!service.AddStudent(newStudent))
@@ -53,7 +54,7 @@ public static class StudentMenu
         Console.WriteLine($"Студент [ {newStudent.FullName} ] добавлен");
     }
 
-    private static void ShowStudent(StudentService service)
+    private static void ShowStudent(IStudentService service)
     {
         if (service.GetAllStudents().Count == 0)
         {
@@ -70,7 +71,7 @@ public static class StudentMenu
         }
     }
 
-    private static void DeleteStudent(StudentService service)
+    private static void DeleteStudent(IStudentService service)
     {
         Guid id = InputHelper.PromptValidStudentId("Введите ID студента, которого хотите удалить: ");
         if (!service.RemoveStudent(id))
@@ -97,7 +98,7 @@ public static class StudentMenu
         };
     }
     
-    private static void EditStudentMenu(StudentService service)
+    private static void EditStudentMenu(IStudentService service)
     {
         Guid id = InputHelper.PromptValidStudentId("Введите ID студента, чьи данные хотите изменить: ");
         var student = service.GetAllStudents().FirstOrDefault(s => s.Id == id);
@@ -109,7 +110,7 @@ public static class StudentMenu
         EntryStudent(student, service, id);
     }
 
-    private static void EntryStudent(Student student, StudentService service, Guid id)
+    private static void EntryStudent(Student student, IStudentService service, Guid id)
     {
         while (true)
         {
